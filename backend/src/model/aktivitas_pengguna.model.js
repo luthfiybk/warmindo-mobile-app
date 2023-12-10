@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             },
         },
         idpengguna: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true

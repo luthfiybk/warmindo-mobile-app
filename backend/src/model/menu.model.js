@@ -3,13 +3,10 @@ const { DataTypes } = require('sequelize')
 module.exports = (sequelize, Sequelize) => {
     const Menu = sequelize.define('Menu', {
         idmenu: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            validate: {
-                notEmpty: true
-            },
+            autoIncrement: true
         },
         namamenu: {
             type: DataTypes.STRING

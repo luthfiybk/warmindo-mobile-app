@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.TIME
         },
         idpelanggan: {
-            type: DataTypes.UUID
+            type: DataTypes.STRING
         },
         jumlahpoin: {
             type: DataTypes.INTEGER

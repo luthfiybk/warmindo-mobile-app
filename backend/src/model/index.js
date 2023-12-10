@@ -40,7 +40,7 @@ db.transaksi.belongsTo(db.pengguna, { foreignKey: 'idpengguna' })
 db.pengguna.hasMany(db.transaksi, { foreignKey: 'idpengguna' })
 
 db.transaksi.belongsTo(db.meja, { foreignKey: 'kodemeja' })
-db.meja.hasMany(db.transaksi, { foreignKey: 'kodemeja' })
+db.meja.hasMany(db.transaksi, { foreignKey: 'kodemeja', unique: true })
 
 db.transaksi.belongsTo(db.promosi, { foreignKey: 'idpromosi' })
 db.promosi.hasMany(db.transaksi, { foreignKey: 'idpromosi' })

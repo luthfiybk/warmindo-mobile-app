@@ -3,13 +3,10 @@ const { DataTypes } = require('sequelize')
 module.exports = (sequelize, Sequelize) => {
     const Role = sequelize.define('Role', {
         idrole: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            validate: {
-                notEmpty: true
-            },
+            autoIncrement: true
         },
         role: {
             type: DataTypes.STRING

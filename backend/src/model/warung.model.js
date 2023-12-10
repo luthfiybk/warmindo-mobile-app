@@ -3,13 +3,9 @@ const { DataTypes } = require('sequelize')
 module.exports = (sequelize, Sequelize) => {
     const Warung = sequelize.define('Warung', {
         idwarung: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             primaryKey: true,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            },
+            allowNull: false
         },
         namawarung: {
             type: DataTypes.STRING

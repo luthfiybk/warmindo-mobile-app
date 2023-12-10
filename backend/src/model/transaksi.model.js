@@ -3,8 +3,7 @@ const { DataTypes } = require('sequelize')
 module.exports = (sequelize, Sequelize) => {
     const Transaksi = sequelize.define('Transaksi', {
         idtransaksi: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             primaryKey: true,
             allowNull: false,
             validate: {
@@ -21,17 +20,17 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.ENUM(["1", "2"])
         },
         idpengguna: {
-            type: DataTypes.UUID
+            type: DataTypes.STRING
         },
         idpelanggan: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             allowNull: true,
         },
         status: {
             type: DataTypes.ENUM(["Baru", "Diproses", "Disajikan", "Selesai"])
         },
         kodemeja: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
         },
         namapelanggan: {
             type: DataTypes.STRING
@@ -51,8 +50,9 @@ module.exports = (sequelize, Sequelize) => {
         },
     },{
         tableName: 'Transaksi',
-        timestamps: false
+        timestamps: false,
     })
+
 
     return Transaksi
 }

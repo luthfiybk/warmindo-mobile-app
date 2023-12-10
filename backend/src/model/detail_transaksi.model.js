@@ -3,10 +3,10 @@ const { DataTypes } = require('sequelize')
 module.exports = (sequelize, Sequelize) => {
     const DetailTransaksi = sequelize.define('DetailTransaksi', {
         idtransaksi: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
         },
         idmenu: {
-            type: DataTypes.UUID
+            type: DataTypes.INTEGER
         },
         namamenu: {
             type: DataTypes.STRING
