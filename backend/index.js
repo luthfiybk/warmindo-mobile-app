@@ -15,10 +15,39 @@ app.use(cookieSession({
 const port = process.env.PORT
 
 const db = require("./src/model")
+const Role = db.role
+const Warung = db.warung
+const Meja = db.meja
 
-// db.sequelize.sync({ force: true })
-const today = new Date().toLocaleDateString()
-console.log(today)
+// db.sequelize.sync({ force: true }).then(() => {
+//     initial()
+// })
+
+function initial() {
+    Role.create({
+        idrole: 1,
+        role: "Kasir",
+        status: "Aktif"
+    })
+
+    Warung.create({
+        idwarung: 'WT1',
+        namawarung: 'Warmindo',
+        logo: 'logo',
+        gambar: 'gambar'
+    })
+
+    Meja.create({
+        idmeja: 'A1',
+        idwarung: 'WT1',
+        kodemeja: 'A1'
+    })
+}
+
+const now = new Date();
+const localDate = new Date(now.getTime() + 7 * 60 * 60000); // Menambahkan 7 jam ke waktu UTC
+const formattedDate = localDate.toISOString().slice(0, 10);
+console.log(formattedDate);
 
 require("./src/routes/auth.routes")(app)
 require("./src/routes/kasir.routes")(app)

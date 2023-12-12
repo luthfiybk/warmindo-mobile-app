@@ -27,8 +27,8 @@ db.pengguna.hasMany(db.aktivitas_pengguna, { foreignKey: 'idpengguna' })
 db.detail_transaksi.belongsTo(db.transaksi, { foreignKey: 'idtransaksi' })
 db.transaksi.hasMany(db.detail_transaksi, { foreignKey: 'idtransaksi' })
 
-db.detail_transaksi.belongsTo(db.menu, { foreignKey: 'idmenu' })
-db.menu.hasMany(db.detail_transaksi, { foreignKey: 'idmenu' })
+// db.detail_transaksi.belongsTo(db.menu, { foreignKey: 'idmenu' })
+// db.menu.hasMany(db.detail_transaksi, { foreignKey: 'idmenu' })
 
 db.transaksi.belongsTo(db.pelanggan, { foreignKey: 'idpelanggan' })
 db.pelanggan.hasMany(db.transaksi, { foreignKey: 'idpelanggan' })

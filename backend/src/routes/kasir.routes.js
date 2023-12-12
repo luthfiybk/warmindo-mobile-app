@@ -18,4 +18,9 @@ module.exports = function(app){
         '/api/kasir/transaksi',
         transaksiController.createTransaksi
     )
+
+    app.get(
+        '/api/kasir/transaksi/:idtransaksi',
+        transaksiController.detailTransaksi
+    )
 }

@@ -27,4 +27,9 @@ module.exports = function (app) {
         '/api/auth/logout',
         controller.logout
     )
+
+    app.post(
+        '/api/auth/masuk',
+        controller.masukShift
+    )
 }

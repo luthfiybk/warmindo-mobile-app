@@ -44,5 +44,5 @@ isKasir = async (req, res, next) => {
     }
 }
 
-const authJwt = { verifyToken: this.verifyToken, isKasir: this.isKasir }
+const authJwt = { verifyToken: verifyToken, isKasir: isKasir }
 module.exports = authJwt

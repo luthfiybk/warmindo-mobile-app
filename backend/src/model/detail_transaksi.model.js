@@ -4,21 +4,26 @@ module.exports = (sequelize, Sequelize) => {
     const DetailTransaksi = sequelize.define('DetailTransaksi', {
         idtransaksi: {
             type: DataTypes.STRING,
+            primaryKey: true,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            },
         },
         idmenu: {
-            type: DataTypes.INTEGER
+            type: DataTypes.ARRAY(DataTypes.INTEGER)
         },
         namamenu: {
-            type: DataTypes.STRING
+            type: DataTypes.ARRAY(DataTypes.STRING)
         },
         jumlah: {
-            type: DataTypes.INTEGER
+            type: DataTypes.ARRAY(DataTypes.INTEGER)
         },
         harga: {
-            type: DataTypes.INTEGER
+            type: DataTypes.ARRAY(DataTypes.INTEGER)
         },
         subtotal: {
-            type: DataTypes.INTEGER
+            type: DataTypes.ARRAY(DataTypes.INTEGER)
         },
         status: {
             type: DataTypes.ENUM(['Aktif', 'Batal'])

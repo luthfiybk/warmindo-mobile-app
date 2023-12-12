@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.ENUM(['Login', 'Logout', 'Akses Shift'])
         },
         tanggal: {
-            type: DataTypes.DATE
+            type: DataTypes.STRING
         },
         waktu: {
             type: DataTypes.TIME

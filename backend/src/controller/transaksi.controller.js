@@ -1,8 +1,10 @@
 const db = require("../model")
 const Transaksi = db.transaksi
+const detailTransaksi = db.detail_transaksi
+const sequelize = db.sequelize
 
 exports.getAll = async (req, res) => {
-    const today = new Date().toDateString()
+    const today = new Date().toISOString().slice(0, 10)
 
     try {
         const transaksi = await Transaksi.findAll({
@@ -11,9 +13,7 @@ exports.getAll = async (req, res) => {
             }
         })
 
-        res.status(200).send({
-            message: "Berhasil mendapatkan data transaksi"
-        })
+        res.status(200).send(transaksi)
     } catch (error) {
         res.status(500).send({ error: error.message })
     }
@@ -22,11 +22,34 @@ exports.getAll = async (req, res) => {
 exports.detailTransaksi = async (req, res) => {
     const idtransaksi = req.params.idtransaksi
     try {
-        await Transaksi.findOne({
+        const transaksi = await Transaksi.findOne({
+            attributes: ['idtransaksi', 'status'],
+            include: [
+                {
+                    model: detailTransaksi,
+                    attributes: ['namamenu', 'jumlah', 'harga', 'subtotal', 'status'],
+                    on: {
+                        idtransaksi: sequelize.where(
+                            sequelize.col('Transaksi.idtransaksi'),
+                            '=',
+                            sequelize.col('DetailTransaksis.idtransaksi')
+                        ),
+                    },
+                },
+            ],
+            where: {
+                idtransaksi: idtransaksi
+            },
+            raw: true,
+        });
+        
+        await detailTransaksi.findOne({
             where: {
                 idtransaksi: idtransaksi
             }
         })
+
+        res.status(200).send(transaksi)
     } catch (error) {
         res.status(500).send({ error: error.message })
     }
@@ -35,19 +58,19 @@ exports.detailTransaksi = async (req, res) => {
 exports.createTransaksi = async (req, res) => {
     const today = new Date()
     const dateFormat = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${(today.getDate()).toString().padStart(2, '0')}`
-    const tanggal = today.toLocaleDateString()
-    const shift = req.body.shift
+    const tanggal = today.toISOString().slice(0, 10)
     const count = await Transaksi.count()
     const incId = (count + 1).toString().padStart(3, '0')
     const waktu = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+    const shift = req.session.shift
 
     try {
         const transaksi = {
             idtransaksi: req.body.warung + dateFormat + shift + incId,
-            tanggal: today,
+            tanggal: tanggal,
             waktu: waktu,
             shift: shift,
-            idpengguna: req.body.idpengguna,
+            idpengguna: req.session.idpengguna,
             idpelanggan: req.body.idpelanggan,
             status: 'Baru',
             kodemeja: req.body.kodemeja,
@@ -58,23 +81,24 @@ exports.createTransaksi = async (req, res) => {
             idpromosi: req.body.idpromosi
         }
 
-        const detailTransaksi = {
+        const detailtransaksi = {
             idtransaksi: transaksi.idtransaksi,
             idmenu: req.body.idmenu,
+            namamenu: req.body.namamenu,
             jumlah: req.body.jumlah,
             harga: req.body.harga,
             diskon: req.body.diskon,
-            total: req.body.total
+            subtotal: req.body.subtotal,
+            status: 'Aktif'
         }
 
-        console.log(transaksi)
-        console.log(detailTransaksi)
-        await Transaksi.create(transaksi).then(data => {
-            res.status(201).send(data)
-        }).catch(err => {
-            res.status(500).send({ message: err.message })
-        })
-        
+        console.log('transaksi: ', transaksi)
+        console.log('detailTransaksi: ', detailtransaksi)
+
+        await Transaksi.create(transaksi)
+        await detailTransaksi.create(detailtransaksi)
+
+        res.status(200).send({ message: 'Transaksi berhasil dibuat' })
     } catch (error) {
         res.status(500).send({ message: error.message })
     }
