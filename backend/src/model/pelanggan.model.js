@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.STRING
         },
         tanggaldaftar: {
-            type: DataTypes.DATE
+            type: DataTypes.STRING
         },
         waktudaftar: {
             type: DataTypes.TIME

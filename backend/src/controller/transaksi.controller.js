@@ -4,14 +4,10 @@ const detailTransaksi = db.detail_transaksi
 const sequelize = db.sequelize
 
 exports.getAll = async (req, res) => {
-    const today = new Date().toISOString().slice(0, 10)
+    const today = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' })
 
     try {
-        const transaksi = await Transaksi.findAll({
-            where: {
-                tanggal: today
-            }
-        })
+        const transaksi = await Transaksi.findAll()
 
         res.status(200).send(transaksi)
     } catch (error) {
@@ -23,11 +19,16 @@ exports.detailTransaksi = async (req, res) => {
     const idtransaksi = req.params.idtransaksi
     try {
         const transaksi = await Transaksi.findOne({
-            attributes: ['idtransaksi', 'status'],
+            attributes: ['idtransaksi', 'status', 'tanggal', 'waktu', 
+            [sequelize.col('DetailTransaksis.namamenu'), 'namamenu'], 
+            [sequelize.col('DetailTransaksis.jumlah'), 'jumlah'], 
+            [sequelize.col('DetailTransaksis.harga'), 'harga'], 
+            [sequelize.col('DetailTransaksis.subtotal'), 'subtotal'], 
+            [sequelize.col('DetailTransaksis.status'), 'transaksi_status']],
             include: [
                 {
                     model: detailTransaksi,
-                    attributes: ['namamenu', 'jumlah', 'harga', 'subtotal', 'status'],
+                    attributes: [],
                     on: {
                         idtransaksi: sequelize.where(
                             sequelize.col('Transaksi.idtransaksi'),
@@ -43,11 +44,11 @@ exports.detailTransaksi = async (req, res) => {
             raw: true,
         });
         
-        await detailTransaksi.findOne({
-            where: {
-                idtransaksi: idtransaksi
-            }
-        })
+        // const transaksi = await detailTransaksi.findOne({
+        //     where: {
+        //         idtransaksi: idtransaksi
+        //     }
+        // })
 
         res.status(200).send(transaksi)
     } catch (error) {
@@ -58,7 +59,7 @@ exports.detailTransaksi = async (req, res) => {
 exports.createTransaksi = async (req, res) => {
     const today = new Date()
     const dateFormat = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${(today.getDate()).toString().padStart(2, '0')}`
-    const tanggal = today.toISOString().slice(0, 10)
+    const tanggal = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' })
     const count = await Transaksi.count()
     const incId = (count + 1).toString().padStart(3, '0')
     const waktu = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
@@ -94,6 +95,7 @@ exports.createTransaksi = async (req, res) => {
 
         console.log('transaksi: ', transaksi)
         console.log('detailTransaksi: ', detailtransaksi)
+
 
         await Transaksi.create(transaksi)
         await detailTransaksi.create(detailtransaksi)

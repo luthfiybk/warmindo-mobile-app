@@ -1,4 +1,6 @@
 const transaksiController = require('../controller/transaksi.controller')
+const menuController = require('../controller/menu.controller')
+const kasirController = require('../controller/kasir.controller')
 
 module.exports = function(app){
     // app.use(function(req, res, next) {
@@ -22,5 +24,15 @@ module.exports = function(app){
     app.get(
         '/api/kasir/transaksi/:idtransaksi',
         transaksiController.detailTransaksi
+    )
+
+    app.get(
+        '/api/kasir/menu',
+        menuController.getAll
+    )
+
+    app.get(
+        '/api/kasir/profile',
+        kasirController.getProfile
     )
 }

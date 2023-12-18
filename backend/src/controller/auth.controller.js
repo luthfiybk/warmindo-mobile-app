@@ -13,7 +13,7 @@ exports.signup = async (req, res) => {
 
     try {
         let pengguna = await Pengguna.create({
-            idpengguna: req.body.idpengguna + tanggal + 'X' + incId,
+            idpengguna: req.body.warung + tanggal + 'X' + incId,
             username: req.body.username,
             password: bcrypt.hashSync(req.body.password, 8),
             namapengguna: req.body.namapengguna,
@@ -78,6 +78,8 @@ exports.login = async (req, res) => {
             waktu: waktu
         })
 
+        console.log(req.session)
+
         res.status(200).send({ 
             idpengguna: pengguna.idpengguna,
             username: pengguna.username,
@@ -96,14 +98,17 @@ exports.masukShift = async (req, res) => {
         const jam = today.getHours()
 
         if(jam >= 11 && jam < 18) {
-            const shift = 1
+            const shift = "1"
             req.session.shift = shift
         } else if (jam >= 18 && jam <= 23) {
-            const shift = 2
+            const shift = "2"
+            req.session.shift = shift
+        } else {
+            const shift = "3"
             req.session.shift = shift
         }
 
-        console.log(req.session)
+        console.log(req.session.shift)
 
         await AktivitasPengguna.create({
             idpengguna: req.session.idpengguna,
@@ -112,7 +117,7 @@ exports.masukShift = async (req, res) => {
             waktu: waktu
         })
 
-        res.status(200).send({ message: 'Berhasil masuk shift'})
+        res.status(200).send({shift: req.session.shift, message: 'Berhasil masuk shift'})
     } catch (error) {
         res.status(500).send({message: error.message })
     }

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 const cookieSession = require('cookie-session')
 const app = express()
+const cors = require('cors')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -11,6 +12,7 @@ app.use(cookieSession({
     keys: ['COOKIE_SECRET'],
     httpOnly: true
 }))
+app.use(cors())
 
 const port = process.env.PORT
 
@@ -43,11 +45,6 @@ function initial() {
         kodemeja: 'A1'
     })
 }
-
-const now = new Date();
-const localDate = new Date(now.getTime() + 7 * 60 * 60000); // Menambahkan 7 jam ke waktu UTC
-const formattedDate = localDate.toISOString().slice(0, 10);
-console.log(formattedDate);
 
 require("./src/routes/auth.routes")(app)
 require("./src/routes/kasir.routes")(app)
