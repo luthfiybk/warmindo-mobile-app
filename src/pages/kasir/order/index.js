@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, ScrollView } from "react-native"
+import { View, Text, StatusBar, ScrollView, TouchableOpacity } from "react-native"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { LinearGradient } from "expo-linear-gradient"
@@ -9,6 +9,17 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 const Order = () => {
     const insets = useSafeAreaInsets()
     const [menu, setMenu] = useState([])
+    const [openCart, isOpenCart] = useState(false)
+    const [order, setOrder] = useState({
+        warung: 'WT1',
+        kodemeja: 'A1',
+        idmenu: [],
+        namamenu: [],
+        jumlah: [],
+        harga: [],
+        subtotal: 0,
+        total: 0
+    })
 
     const fetchData = async () => {
         try {
@@ -20,8 +31,44 @@ const Order = () => {
         }
     }
 
+    const orderRecap = (order) => {
+        const formData = new FormData();
+
+        formData.append('warung', order.warung);
+        formData.append('kodemeja', order.kodemeja);
+        formData.append('total', order.total);
+        formData.append('metodepembayaran', order.metodepembayaran);
+        formData.append('totaldiskon', order.totaldiskon);
+
+        // Handle array properties
+        order.idmenu.forEach((id, index) => {
+            formData.append(`idmenu[${index}]`, id);
+        });
+
+        order.namamenu.forEach((nama, index) => {
+            formData.append(`namamenu[${index}]`, nama);
+        });
+
+        order.jumlah.forEach((jumlah, index) => {
+            formData.append(`jumlah[${index}]`, order.jumlah);
+        });
+
+        order.harga.forEach((harga, index) => {
+            formData.append(`harga[${index}]`, harga);
+        });
+
+        order.subtotal.forEach((subtotal, index) => {
+            formData.append(`subtotal[${index}]`, subtotal);
+        });
+
+        console.log(order)
+        return formData;
+        
+    }
+
     useEffect(() => {
         fetchData()
+        isOpenCart(true)
     }, [])
 
     return (
@@ -44,6 +91,24 @@ const Order = () => {
                         </Menu>
                     ))}
                 </ScrollView>
+
+                {openCart && (
+                <View style={{ position: 'absolute', bottom: 55, left: 0, right: 0, backgroundColor: 'white', padding: 10 }}>   
+                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Cart</Text>
+                    <TouchableOpacity
+                        onPress={handleViewCart}
+                        style={{
+                            position: 'absolute',
+                            right: 20,
+                            backgroundColor: 'blue',
+                            padding: 10,
+                            borderRadius: 10,
+                        }}
+                    >
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>View Cart</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
             </LinearGradient>
         </View>
     )

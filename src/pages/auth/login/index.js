@@ -15,21 +15,12 @@ const Login = ({navigation}) => {
             const idpengguna = await AsyncStorage.setItem('idpengguna', response.data.idpengguna)
             const token = await AsyncStorage.setItem('token', response.data.accessToken)
 
-            navigation.navigate('Shift')
+            navigation.navigate('OwnerNavigation')
         } catch (error) {
             alert('Username atau password salah')
         }
     }
     return (
-        // <Background>
-        //     <View style={{flexDirection: 'column', gap: 5}}>
-        //         <TextInput style={{backgroundColor: "#fff", paddingHorizontal: '10%', paddingVertical: "2%", borderRadius: 5}} placeholder="Masukkan username" onChangeText={setUsername} />
-        //         <TextInput style={{backgroundColor: "#fff", paddingHorizontal: '10%', paddingVertical: "2%", borderRadius: 5}} placeholder="Masukkan password" onChangeText={setPassword} secureTextEntry={true} />
-        //     </View>
-        //     <TouchableOpacity onPress={loginHandler}>
-
-        //     </TouchableOpacity>
-        // </Background>
         <Background>
             <Text style={{fontWeight: 'bold', fontSize: 25, textAlign: 'center', color: 'white'}}>Login</Text>
             <View style={styles.inputContainer}>

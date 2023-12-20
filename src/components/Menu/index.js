@@ -1,7 +1,9 @@
-import { View, Text, Image, Pressable } from 'react-native'
+import { View, Text, Image, Pressable, StyleSheet } from 'react-native'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import {SimpleStepper} from 'react-native-simple-stepper'
+
 const Menu = ({children}) => {
     const [menu, setMenu] = useState([])
     const [counter, setCounter] = useState(0)
@@ -32,31 +34,73 @@ const Menu = ({children}) => {
     }, [])
 
     return (
-        <View style={{marginHorizontal: 10, marginTop: 5}}>
-            <View style={{flexDirection: 'column', justifyContent: 'flex-start', gap: 5}}>
-                    <View key={menu.idmenu} style={{flexDirection: 'row', gap: 5, borderBottomWidth: 1, paddingBottom: 5, borderColor: 'grey', justifyContent: 'space-between', alignContent: 'flex-start'}}>
-                        <Image source={require('../../../assets/foto.jpg')} style={{width: 100, height: 100}} />
-                        <View style={{flexDirection: 'column', justifyContent: 'flex-start', alignSelf: 'center'}}>
-                            {children}
-                        </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end', alignContent: 'flex-end', gap: 5}}>
-                            <Pressable style={{paddingHorizontal: '5%', paddingVertical: '1%', backgroundColor: 'orange', borderRadius: 5}} onPress={decrement}>
-                                <Text style={{color: 'white'}}>-</Text>
-                            </Pressable>
-                            <Text>{counter}</Text>
-                            <Pressable style={{paddingHorizontal: '5%', paddingVertical: '1%', backgroundColor: 'orange', borderRadius: 5}} onPress={increment}>
-                                <Text style={{color: 'white'}}>+</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                {/* <Image source={require('../../../assets/foto.jpg')} style={{width: 100, height: 100}} />
-                <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
-                    <Text>{menu.namamenu}</Text>
-                    <Text>{menu.harga}</Text>
-                </View> */}
+        <View style={styles.wrapper}>
+        <View style={styles.imageWrapper}>
+            <Image
+                style={styles.image}
+                source={require('../../../assets/foto.jpg')}
+            />
+        </View>
+        <View style={styles.detailsWrapper}>
+            <View style={styles.textContainer}>
+                {children}  
+            </View>
+            <View style={styles.counterContainer}>
+                <SimpleStepper
+                    
+                />
             </View>
         </View>
+    </View>
     )
 }
+
+const styles = StyleSheet.create({
+    wrapper: {
+        flexDirection: 'row',
+        marginTop: 5,
+        borderBottomWidth: 1,
+        paddingBottom: 5,
+        borderColor: 'grey',
+        marginHorizontal: 5
+    },
+    imageWrapper: {
+        marginRight: 10,
+    },
+    image: {
+        width: 100,
+        height: 100,
+    },
+    detailsWrapper: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    textContainer: {
+        flex: 1,
+    },
+    counterContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 20,
+        alignSelf: 'flex-end'
+    },
+    counterButton: {
+        backgroundColor: 'orange',
+        borderRadius: 15,
+        paddingHorizontal: 10,
+        paddingBottom: 3
+    },
+    counterButtonText: {
+        fontSize: 20,
+        color: 'white',
+    },
+    counterText: {
+        marginHorizontal: 10,
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+});
 
 export default Menu

@@ -2,6 +2,7 @@ const db = require('../model')
 const Pengguna = db.pengguna
 
 checkDuplicateUsername = async (req, res, next) => {
+    console.log(req.body)
     try {
         const username = await Pengguna.findOne({
             where: {
@@ -17,7 +18,8 @@ checkDuplicateUsername = async (req, res, next) => {
 
         next()
     } catch (error) {
-        return res.status(500).send({ message: "Gagal membuat akun" })
+        res.status(500).send({ message: error.message })
+        console.log(error)
     }
 }
 

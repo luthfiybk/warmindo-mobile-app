@@ -17,9 +17,9 @@ exports.signup = async (req, res) => {
             username: req.body.username,
             password: bcrypt.hashSync(req.body.password, 8),
             namapengguna: req.body.namapengguna,
-            idrole: req.body.idrole,
+            idrole: parseInt(req.body.idrole),
             status: 'Aktif',
-            foto: req.body.foto
+            foto: req.file.filename
         })
 
         const result = await pengguna.save()
@@ -31,6 +31,7 @@ exports.signup = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({message: error.message })
+        console.log(error)
     }
 }
 

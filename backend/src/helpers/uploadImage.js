@@ -1,4 +1,5 @@
 const multer = require('multer')
+const path = require('path')
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -6,7 +7,7 @@ const upload = multer({
             cb(null, 'public/images')
         },
         filename: (req, file, cb) => {
-            cb(null, Date.now() + '-' + file.originalname)
+            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
         }
     }),
     fileFilter: (req, file, cb) => {

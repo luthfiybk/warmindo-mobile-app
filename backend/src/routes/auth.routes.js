@@ -1,5 +1,6 @@
 const { verifySignUp } = require("../middleware")
 const controller = require("../controller/auth.controller")
+const upload = require("../helpers/uploadImage")
 
 module.exports = function (app) {
     // app.use(function(req, res, next) {
@@ -17,9 +18,7 @@ module.exports = function (app) {
 
     app.post(
         '/api/auth/signup',
-        [
-            verifySignUp.checkDuplicateUsername,
-        ],
+        upload.single('foto'),
         controller.signup
     )
 

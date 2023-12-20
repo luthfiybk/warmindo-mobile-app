@@ -4,6 +4,7 @@ require('dotenv').config()
 const cookieSession = require('cookie-session')
 const app = express()
 const cors = require('cors')
+const path = require('path')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -13,7 +14,7 @@ app.use(cookieSession({
     httpOnly: true
 }))
 app.use(cors())
-
+app.use('/public/images', express.static(path.join(__dirname, 'public/images')));
 const port = process.env.PORT
 
 const db = require("./src/model")
@@ -48,6 +49,7 @@ function initial() {
 
 require("./src/routes/auth.routes")(app)
 require("./src/routes/kasir.routes")(app)
+require("./src/routes/owner.routes")(app)
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
